@@ -24,9 +24,17 @@ function App() {
     setArray(array);
   }
 
+  function mergeSort() {}
+
+  function quickSort() {}
+
+  function insertionSort() {}
+
+  function jsSort() {}
+
   return (
     <div className="App">
-      <div className="container">
+      <div className="barContainer">
         {array.map((barHeight, index) => (
           <div
             key={index}
@@ -39,6 +47,13 @@ function App() {
             }}
           ></div>
         ))}
+      </div>
+      <div className="controlPanel">
+        <button onClick={generateArray}>Generate new Array</button>
+        <button onClick={mergeSort}>Merge Sort</button>
+        <button onClick={quickSort}>Quick Sort</button>
+        <button onClick={insertionSort}>Insertion Sort</button>
+        <button onClick={jsSort}>JS Sort</button>
       </div>
     </div>
   );
