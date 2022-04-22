@@ -3,10 +3,26 @@
   margin: 0 1px;
 }
 
-.container {
+.barContainer {
   display: flex;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
   margin: 0 auto;
   padding: 50px 0px;
+  height: 200px;
+}
+
+.controlPanel {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  padding: 15px;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+.controlPanel button {
+  padding: 10px;
+  margin: 0 10px;
 }
