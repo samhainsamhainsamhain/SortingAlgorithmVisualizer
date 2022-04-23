@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import BubbleSort from "./Algorithms/BubbleSort";
+import QuickSort from "./Algorithms/QuickSort";
 
 import "./App.css";
 
-const ARRAY_LENGTH = 50;
+const ARRAY_LENGTH = 20;
 const MIN_VALUE = 1;
 const MAX_VALUE = 150;
 const BAR_COLOR = "rgb(99, 163, 64)";
@@ -18,7 +20,7 @@ function App() {
   }, []);
 
   function generateArray() {
-    clearSteps()
+    clearSteps();
     const array = [];
     for (let i = 0; i < ARRAY_LENGTH; i++) {
       array.push(
@@ -28,28 +30,20 @@ function App() {
     setArray(array);
   }
 
-  function mergeSort() {}
+  function mergeSortHandler() {}
 
-  function quickSort() {}
-
-  function bubbleSort(array: number[]) {
-    clearSteps()
+  function quickSortHandler() {
+    clearSteps();
     if (arraySteps.length > 0) return;
-    let newArray: number[] = [...array];
-    const newArraySteps = [];
-    for (let i = 0; i < newArray.length - 1; i++) {
-      for (let j = 0; j < newArray.length - i - 1; j++) {
-        if (newArray[j] > newArray[j + 1]) {
-          newArray = swap(newArray, j, j + 1);
-        }
-        newArraySteps.push(newArray.slice());
-      }
-      newArraySteps.push(newArray.slice());
-    }
-    return setArraySteps(newArraySteps);
+    const newArraySteps = QuickSort(array);
   }
 
-  function jsSort() {}
+  function bubbleSortHandler() {
+    clearSteps();
+    if (arraySteps.length > 0) return;
+    const newArraySteps = BubbleSort(array);
+    return setArraySteps(newArraySteps);
+  }
 
   function animateSorting() {
     if (isAnimating || !(arraySteps.length > 0)) return;
@@ -68,15 +62,6 @@ function App() {
         }
       }, i * STEP_DELAY);
     }
-    // console.log(!isPlaying)
-    // setIsPlaying(false)
-  }
-
-  function swap(array: number[], a: number, b: number) {
-    let temp = array[a];
-    array[a] = array[b];
-    array[b] = temp;
-    return array;
   }
 
   function clearSteps() {
@@ -103,10 +88,9 @@ function App() {
       </div>
       <div className="controlPanel">
         <button onClick={generateArray}>Generate new Array</button>
-        <button onClick={mergeSort}>Merge Sort</button>
-        <button onClick={quickSort}>Quick Sort</button>
-        <button onClick={() => bubbleSort(array)}>Bubble Sort</button>
-        <button onClick={jsSort}>JS Sort</button>
+        <button onClick={mergeSortHandler}>Merge Sort</button>
+        <button onClick={quickSortHandler}>Quick Sort</button>
+        <button onClick={bubbleSortHandler}>Bubble Sort</button>
         <button onClick={animateSorting} disabled={isAnimating}>
           Animate
         </button>
