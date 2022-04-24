@@ -9,7 +9,7 @@ const MIN_VALUE = 1;
 const MAX_VALUE = 150;
 const BAR_COLOR = "rgb(99, 163, 64)";
 const SPEED_OF_ALGS = {
-  bubble: 1,
+  bubble: 0.5,
   quick: 15,
   bogo: 30,
 };
@@ -47,15 +47,16 @@ function App() {
   function quickSortHandler() {
     clearSteps();
     setStepDelay(SPEED_OF_ALGS.quick);
-    if (arraySteps.length > 0) return;
     const newArraySteps = QuickSort(array);
+    saySteps(newArraySteps);
     return setArraySteps(newArraySteps);
   }
 
   function bubbleSortHandler() {
     clearSteps();
-    if (arraySteps.length > 0) return;
+    setStepDelay(SPEED_OF_ALGS.bubble);
     const newArraySteps = BubbleSort(array);
+    saySteps(newArraySteps);
     return setArraySteps(newArraySteps);
   }
 
@@ -98,6 +99,12 @@ function App() {
 
   function clearSteps() {
     setArraySteps([]);
+  }
+
+  function saySteps(newArraySteps: number[][]) {
+    console.log(
+      "There are " + newArraySteps.length + " steps in current animation"
+    );
   }
 
   return (

@@ -7,7 +7,6 @@ export default function getQuickSortSteps(array: number[]) {
   arraySteps = [];
   const copy = [...array];
   QuickSort(copy, 0, copy.length - 1);
-  console.log(copy, "steps");
   return arraySteps;
 }
 
