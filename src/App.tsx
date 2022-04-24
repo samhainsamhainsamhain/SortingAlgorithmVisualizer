@@ -4,16 +4,21 @@ import QuickSort from "./Algorithms/QuickSort";
 
 import "./App.css";
 
-const ARRAY_LENGTH = 20;
+const ARRAY_LENGTH = 200;
 const MIN_VALUE = 1;
 const MAX_VALUE = 150;
 const BAR_COLOR = "rgb(99, 163, 64)";
-const STEP_DELAY = 1;
+const SPEED_OF_ALGS = {
+  bubble: 1,
+  quick: 15,
+  bogo: 30,
+};
 
 function App() {
   const [array, setArray] = useState<number[]>([]);
   const [arraySteps, setArraySteps] = useState<number[][]>([]);
   const [isAnimating, setIsPlaying] = useState(false);
+  const [stepDelay, setStepDelay] = useState<number>(1);
 
   useEffect(() => {
     generateArray();
@@ -34,8 +39,10 @@ function App() {
 
   function quickSortHandler() {
     clearSteps();
+    setStepDelay(SPEED_OF_ALGS.quick);
     if (arraySteps.length > 0) return;
     const newArraySteps = QuickSort(array);
+    return setArraySteps(newArraySteps);
   }
 
   function bubbleSortHandler() {
@@ -60,7 +67,7 @@ function App() {
           setIsPlaying(false);
           console.log("Sorting animation has ended");
         }
-      }, i * STEP_DELAY);
+      }, i * stepDelay);
     }
   }
 
