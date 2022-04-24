@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BubbleSort from "./Algorithms/BubbleSort";
 import QuickSort from "./Algorithms/QuickSort";
+import MergeSort from "./Algorithms/MergeSort";
 import { shuffle, arrayIsEqual } from "./Algorithms/Utility";
 
 import "./App.css";
@@ -10,8 +11,9 @@ const MAX_VALUE = 150;
 const BAR_COLOR = "rgb(99, 163, 64)";
 const SPEED_OF_ALGS = {
   bubble: 1,
-  quick: 15,
-  bogo: 30,
+  quick: 30,
+  lucky: 30,
+  merge: 30,
 };
 
 function App() {
@@ -42,7 +44,13 @@ function App() {
     setArraySize(Number(event.currentTarget.value));
   }
 
-  function mergeSortHandler() {}
+  function mergeSortHandler() {
+    clearSteps();
+    setStepDelay(SPEED_OF_ALGS.merge);
+    if (arraySteps.length > 0) return;
+    const newArraySteps = MergeSort(array);
+    return setArraySteps(newArraySteps);
+  }
 
   function quickSortHandler() {
     clearSteps();
@@ -55,6 +63,7 @@ function App() {
   function bubbleSortHandler() {
     clearSteps();
     setStepDelay(SPEED_OF_ALGS.bubble);
+    if (arraySteps.length > 0) return;
     const newArraySteps = BubbleSort(array);
     saySteps(newArraySteps);
     return setArraySteps(newArraySteps);
@@ -65,7 +74,7 @@ function App() {
       generateArray();
     }
     clearSteps();
-    setStepDelay(SPEED_OF_ALGS.bogo);
+    setStepDelay(SPEED_OF_ALGS.lucky);
     setLuckyTries(luckyTries + 1);
     if (arraySteps.length > 0) return;
     const sortedArray = [...array];
@@ -91,7 +100,9 @@ function App() {
         i++;
         if (i === arraySteps.length - 1) {
           setIsPlaying(false);
-          console.log("Sorting animation has ended");
+          console.log(
+            "Sorting animation has ended in " + arraySteps.length + " steps"
+          );
         }
       }, i * stepDelay);
     }
