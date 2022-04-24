@@ -55,8 +55,8 @@ function App() {
   function quickSortHandler() {
     clearSteps();
     setStepDelay(SPEED_OF_ALGS.quick);
-    if (arraySteps.length > 0) return;
     const newArraySteps = QuickSort(array);
+    saySteps(newArraySteps);
     return setArraySteps(newArraySteps);
   }
 
@@ -65,6 +65,7 @@ function App() {
     setStepDelay(SPEED_OF_ALGS.bubble);
     if (arraySteps.length > 0) return;
     const newArraySteps = BubbleSort(array);
+    saySteps(newArraySteps);
     return setArraySteps(newArraySteps);
   }
 
@@ -109,6 +110,12 @@ function App() {
 
   function clearSteps() {
     setArraySteps([]);
+  }
+
+  function saySteps(newArraySteps: number[][]) {
+    console.log(
+      "There are " + newArraySteps.length + " steps in current animation"
+    );
   }
 
   return (
