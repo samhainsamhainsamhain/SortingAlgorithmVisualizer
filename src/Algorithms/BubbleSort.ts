@@ -1,6 +1,6 @@
 import { swap } from "./Utility";
 
-export default function BubbleSort(array: number[]) {
+export default function getBubbleSortSteps(array: number[]) {
   let newArray: number[] = [...array];
   const newArraySteps = [];
   for (let i = 0; i < newArray.length - 1; i++) {
