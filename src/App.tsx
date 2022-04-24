@@ -9,7 +9,7 @@ const MIN_VALUE = 1;
 const MAX_VALUE = 150;
 const BAR_COLOR = "rgb(99, 163, 64)";
 const SPEED_OF_ALGS = {
-  bubble: 0.5,
+  bubble: 1,
   quick: 15,
   bogo: 30,
 };
