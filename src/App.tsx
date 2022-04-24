@@ -5,7 +5,6 @@ import { shuffle, arrayIsEqual } from "./Algorithms/Utility";
 
 import "./App.css";
 
-const ARRAY_LENGTH = 3;
 const MIN_VALUE = 1;
 const MAX_VALUE = 150;
 const BAR_COLOR = "rgb(99, 163, 64)";
@@ -21,21 +20,26 @@ function App() {
   const [isAnimating, setIsPlaying] = useState(false);
   const [stepDelay, setStepDelay] = useState<number>(1);
   const [luckyTries, setLuckyTries] = useState(0);
+  const [arraySize, setArraySize] = useState(50);
 
   useEffect(() => {
     generateArray();
-  }, []);
+  }, [arraySize]);
 
   function generateArray() {
     setLuckyTries(0);
     clearSteps();
     const array = [];
-    for (let i = 0; i < ARRAY_LENGTH; i++) {
+    for (let i = 0; i < arraySize; i++) {
       array.push(
         Math.floor(Math.random() * (MAX_VALUE - MIN_VALUE + 1) + MIN_VALUE)
       );
     }
     setArray(array);
+  }
+
+  function changeArraySizeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    setArraySize(Number(event.currentTarget.value));
   }
 
   function mergeSortHandler() {}
@@ -107,7 +111,7 @@ function App() {
                 style={{
                   backgroundColor: `${BAR_COLOR}`,
                   height: `${2 * barHeight}px`,
-                  width: `${100 / ARRAY_LENGTH}%`,
+                  width: `${100 / arraySize}%`,
                   maxWidth: `10px`,
                 }}
               ></div>
@@ -115,10 +119,31 @@ function App() {
           : null}
       </div>
       <div className="controlPanel">
-        <button onClick={generateArray}>Generate new Array</button>
-        <button onClick={mergeSortHandler}>Merge Sort</button>
-        <button onClick={quickSortHandler}>Quick Sort</button>
-        <button onClick={bubbleSortHandler}>Bubble Sort</button>
+        <div className="SliderWrapper">
+          <input
+            onChange={changeArraySizeHandler}
+            disabled={isAnimating}
+            type="range"
+            min="10"
+            defaultValue="50"
+            max="100"
+            step="1"
+            id="arraySize"
+          />
+          <label htmlFor="arraySize">Size of array: {arraySize}</label>
+        </div>
+        <button onClick={generateArray} disabled={isAnimating}>
+          Generate new Array
+        </button>
+        <button onClick={mergeSortHandler} disabled={isAnimating}>
+          Merge Sort
+        </button>
+        <button onClick={quickSortHandler} disabled={isAnimating}>
+          Quick Sort
+        </button>
+        <button onClick={bubbleSortHandler} disabled={isAnimating}>
+          Bubble Sort
+        </button>
         <div className="luckyWrapper">
           <button
             className="luckyButton"
@@ -128,7 +153,7 @@ function App() {
             Most effective sorting algorithm*
           </button>
           {/* This one just shuffles current array */}
-          <span className="luckyStar">*But you gotta be very lucky</span>
+          <span className="luckyStar">*You gotta be very lucky</span>
         </div>
         <button onClick={animateSorting} disabled={isAnimating}>
           Animate

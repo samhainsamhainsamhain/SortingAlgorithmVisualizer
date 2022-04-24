@@ -1,15 +1,16 @@
-.bar {
-  display: inline-block;
-  margin: 0 1px;
-}
-
 .barContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  padding: 50px 0px;
+  padding: 150px 0px;
   height: 200px;
+}
+
+.bar {
+  display: inline-block;
+  margin: 0 1px;
+  transition: height ease-in-out 0.3s;
 }
 
 .controlPanel {
@@ -43,4 +44,11 @@
   top: 40px;
   font-size: 9px;
   color: rgb(255, 0, 0);
+}
+
+.SliderWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
