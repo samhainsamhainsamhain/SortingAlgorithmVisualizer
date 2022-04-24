@@ -11,6 +11,7 @@
   display: inline-block;
   margin: 0 1px;
   transition: height ease-in-out 0.3s;
+  transition: background-color ease-in-out 0.5s;
 }
 
 .controlPanel {

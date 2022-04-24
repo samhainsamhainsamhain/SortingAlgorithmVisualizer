@@ -8,7 +8,11 @@ import "./App.css";
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 150;
-const BAR_COLOR = "rgb(99, 163, 64)";
+const BAR_COLOR = {
+  freshArray: "rgb(128, 128, 128)",
+  inProgress: "rgb(189, 179, 23)",
+  sorted: "rgb(63, 174, 54)",
+};
 const SPEED_OF_ALGS = {
   bubble: 1,
   quick: 30,
@@ -23,12 +27,18 @@ function App() {
   const [stepDelay, setStepDelay] = useState<number>(1);
   const [luckyTries, setLuckyTries] = useState(0);
   const [arraySize, setArraySize] = useState(50);
+  const [barColor, setBarColor] = useState(BAR_COLOR.freshArray);
 
   useEffect(() => {
     generateArray();
   }, [arraySize]);
 
+  useEffect(() => {
+    animateSorting();
+  }, [arraySteps]);
+
   function generateArray() {
+    setBarColor(BAR_COLOR.freshArray);
     setLuckyTries(0);
     clearSteps();
     const array = [];
@@ -45,6 +55,7 @@ function App() {
   }
 
   function mergeSortHandler() {
+    setArray(shuffle(array));
     clearSteps();
     setStepDelay(SPEED_OF_ALGS.merge);
     if (arraySteps.length > 0) return;
@@ -53,20 +64,27 @@ function App() {
   }
 
   function quickSortHandler() {
+    setArray(shuffle(array));
     clearSteps();
     setStepDelay(SPEED_OF_ALGS.quick);
+    if (arraySteps.length > 0) return;
     const newArraySteps = QuickSort(array);
-    saySteps(newArraySteps);
     return setArraySteps(newArraySteps);
   }
 
   function bubbleSortHandler() {
+    setArray(shuffle(array));
     clearSteps();
-    setStepDelay(SPEED_OF_ALGS.bubble);
+    if (arraySize <= 50) {
+      setStepDelay(SPEED_OF_ALGS.bubble * 3);
+    } else if (arraySize > 80) {
+      setStepDelay(SPEED_OF_ALGS.bubble);
+    } else {
+      setStepDelay(SPEED_OF_ALGS.bubble * 2);
+    }
     if (arraySteps.length > 0) return;
     const newArraySteps = BubbleSort(array);
-    saySteps(newArraySteps);
-    return setArraySteps(newArraySteps);
+    setArraySteps(newArraySteps);
   }
 
   function LuckySortHandler() {
@@ -74,14 +92,16 @@ function App() {
       generateArray();
     }
     clearSteps();
+    setBarColor(BAR_COLOR.inProgress);
     setStepDelay(SPEED_OF_ALGS.lucky);
     setLuckyTries(luckyTries + 1);
     if (arraySteps.length > 0) return;
     const sortedArray = [...array];
     sortedArray.sort((a, b) => a - b);
     const newArray = shuffle(array);
-    const equality = arrayIsEqual(newArray, sortedArray);
-    if (equality) {
+    const arraysEquality = arrayIsEqual(newArray, sortedArray);
+    if (arraysEquality) {
+      setBarColor(BAR_COLOR.sorted);
       return alert("Congrats! Array is sorted!");
     }
     return setArray(newArray);
@@ -90,6 +110,7 @@ function App() {
   function animateSorting() {
     if (isAnimating || !(arraySteps.length > 0)) return;
     setIsPlaying(true);
+    setBarColor(BAR_COLOR.inProgress);
     arrayNextStep();
   }
 
@@ -100,6 +121,8 @@ function App() {
         i++;
         if (i === arraySteps.length - 1) {
           setIsPlaying(false);
+          setBarColor(BAR_COLOR.sorted);
+          clearSteps();
           console.log(
             "Sorting animation has ended in " + arraySteps.length + " steps"
           );
@@ -112,12 +135,6 @@ function App() {
     setArraySteps([]);
   }
 
-  function saySteps(newArraySteps: number[][]) {
-    console.log(
-      "There are " + newArraySteps.length + " steps in current animation"
-    );
-  }
-
   return (
     <div className="App">
       <div className="barContainer">
@@ -127,7 +144,7 @@ function App() {
                 key={index}
                 className="bar"
                 style={{
-                  backgroundColor: `${BAR_COLOR}`,
+                  backgroundColor: `${barColor}`,
                   height: `${2 * barHeight}px`,
                   width: `${100 / arraySize}%`,
                   maxWidth: `10px`,
@@ -162,27 +179,12 @@ function App() {
         <button onClick={bubbleSortHandler} disabled={isAnimating}>
           Bubble Sort
         </button>
-        <div className="luckyWrapper">
-          <button
-            className="luckyButton"
-            onClick={LuckySortHandler}
-            disabled={isAnimating}
-          >
-            Most effective sorting algorithm*
-          </button>
-          {/* This one just shuffles current array */}
-          <span className="luckyStar">*You gotta be very lucky</span>
-        </div>
-        <button onClick={animateSorting} disabled={isAnimating}>
-          Animate
-        </button>
         <button
-          onClick={() => {
-            console.log(array);
-            console.log(arraySteps);
-          }}
+          className="luckyButton"
+          onClick={LuckySortHandler}
+          disabled={isAnimating}
         >
-          Check Array
+          Lucky Sorting
         </button>
       </div>
     </div>
