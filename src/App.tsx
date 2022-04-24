@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import BubbleSort from "./Algorithms/BubbleSort";
 import QuickSort from "./Algorithms/QuickSort";
+import { shuffle, arrayIsEqual } from "./Algorithms/Utility";
 
 import "./App.css";
 
-const ARRAY_LENGTH = 200;
+const ARRAY_LENGTH = 3;
 const MIN_VALUE = 1;
 const MAX_VALUE = 150;
 const BAR_COLOR = "rgb(99, 163, 64)";
@@ -19,12 +20,14 @@ function App() {
   const [arraySteps, setArraySteps] = useState<number[][]>([]);
   const [isAnimating, setIsPlaying] = useState(false);
   const [stepDelay, setStepDelay] = useState<number>(1);
+  const [luckyTries, setLuckyTries] = useState(0);
 
   useEffect(() => {
     generateArray();
   }, []);
 
   function generateArray() {
+    setLuckyTries(0);
     clearSteps();
     const array = [];
     for (let i = 0; i < ARRAY_LENGTH; i++) {
@@ -50,6 +53,24 @@ function App() {
     if (arraySteps.length > 0) return;
     const newArraySteps = BubbleSort(array);
     return setArraySteps(newArraySteps);
+  }
+
+  function LuckySortHandler() {
+    if (arraySteps.length > 0) {
+      generateArray();
+    }
+    clearSteps();
+    setStepDelay(SPEED_OF_ALGS.bogo);
+    setLuckyTries(luckyTries + 1);
+    if (arraySteps.length > 0) return;
+    const sortedArray = [...array];
+    sortedArray.sort((a, b) => a - b);
+    const newArray = shuffle(array);
+    const equality = arrayIsEqual(newArray, sortedArray);
+    if (equality) {
+      return alert("Congrats! Array is sorted!");
+    }
+    return setArray(newArray);
   }
 
   function animateSorting() {
@@ -98,6 +119,17 @@ function App() {
         <button onClick={mergeSortHandler}>Merge Sort</button>
         <button onClick={quickSortHandler}>Quick Sort</button>
         <button onClick={bubbleSortHandler}>Bubble Sort</button>
+        <div className="luckyWrapper">
+          <button
+            className="luckyButton"
+            onClick={LuckySortHandler}
+            disabled={isAnimating}
+          >
+            Most effective sorting algorithm*
+          </button>
+          {/* This one just shuffles current array */}
+          <span className="luckyStar">*But you gotta be very lucky</span>
+        </div>
         <button onClick={animateSorting} disabled={isAnimating}>
           Animate
         </button>
